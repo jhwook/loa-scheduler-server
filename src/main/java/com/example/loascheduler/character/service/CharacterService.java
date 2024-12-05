@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -55,7 +56,22 @@ public class CharacterService {
         );
     }
 
-    public List<Characters> getAllCharacters() {
-        return characterRepository.findAll();
+    public List<CharacterInfoResponse> getAllCharacters() {
+        List<Characters> characters = characterRepository.findAll();
+
+        return characters.stream().map(character -> {
+            CharacterInfoResponse response = new CharacterInfoResponse(
+                    character.getClassName(),
+                    character.getLevel(),
+                    character.getNickName()
+            );
+
+            return response;
+        }).collect(Collectors.toList());
+    }
+
+    public void deleteCharacters(String nickName) {
+        Characters character = characterRepository.findByNickName(nickName);
+        characterRepository.delete(character);
     }
 }

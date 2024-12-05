@@ -9,7 +9,7 @@ public class CharacterInfoResponse {
     private String nickName;
 
 
-    public CharacterInfoResponse(String className, String nickName, String level) {
+    public CharacterInfoResponse(String className, String level, String nickName) {
         this.className = className;
         this.level = level;
         this.nickName = nickName;

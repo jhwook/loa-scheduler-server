@@ -4,6 +4,7 @@ import com.example.loascheduler.character.dto.response.CharacterInfoResponse;
 import com.example.loascheduler.character.entity.Characters;
 import com.example.loascheduler.character.repository.CharacterRepository;
 import com.example.loascheduler.raidGroup.dto.response.RaidGroupListResponse;
+import com.example.loascheduler.raidGroup.dto.response.RaidGroupResponse;
 import com.example.loascheduler.raidGroup.entity.RaidCharacters;
 import com.example.loascheduler.raidGroup.entity.RaidGroup;
 import com.example.loascheduler.raidGroup.repository.RaidCharactersRepository;
@@ -23,8 +24,9 @@ public class RaidGroupService {
     private final RaidCharactersRepository raidCharactersRepository;
     private final CharacterRepository characterRepository;
 
-    public void addRaidGroup(String day) {
-        raidGroupRepository.save(new RaidGroup(day));
+    public RaidGroupResponse addRaidGroup(String day) {
+        RaidGroup raidGroup = raidGroupRepository.save(new RaidGroup(day));
+        return new RaidGroupResponse(raidGroup.getId(), raidGroup.getDay());
     }
 
     public void setRaidName(Long id, String raidName) {
@@ -45,9 +47,9 @@ public class RaidGroupService {
             List<CharacterInfoResponse> characters = raidGroup.getCharacters().stream()
                     .map(raidCharacter -> {
                         CharacterInfoResponse characterResponse = new CharacterInfoResponse(
-                                raidCharacter.getCharacter().getNickName(),
+                                raidCharacter.getCharacter().getClassName(),
                                 raidCharacter.getCharacter().getLevel(),
-                                raidCharacter.getCharacter().getClassName()
+                                raidCharacter.getCharacter().getNickName()
                         );
                         return characterResponse;
                     }).collect(Collectors.toList());
@@ -57,16 +59,17 @@ public class RaidGroupService {
         }).collect(Collectors.toList());
     }
 
-    public void addCharacterToRaidGroup(Long raidGroupId, Long characterId) {
+    public void addCharacterToRaidGroup(Long raidGroupId, String characterName) {
         RaidGroup raidGroup = raidGroupRepository.findById(raidGroupId).orElseThrow();
-        Characters character = characterRepository.findById(characterId).orElseThrow();
+        Characters character = characterRepository.findByNickName(characterName);
 
         RaidCharacters raidCharacters = new RaidCharacters(raidGroup, character);
         raidCharactersRepository.save(raidCharacters);
     }
 
-    public void deleteCharacterToRaidGroup(Long raidGroupId, Long characterId) {
-        RaidCharacters raidCharacter = raidCharactersRepository.findByRaidGroupIdAndCharacterId(raidGroupId, characterId);
+    public void deleteCharacterToRaidGroup(Long raidGroupId, String characterName) {
+        Characters characters = characterRepository.findByNickName(characterName);
+        RaidCharacters raidCharacter = raidCharactersRepository.findByRaidGroupIdAndCharacterId(raidGroupId, characters.getId());
         raidCharactersRepository.delete(raidCharacter);
     }
 
