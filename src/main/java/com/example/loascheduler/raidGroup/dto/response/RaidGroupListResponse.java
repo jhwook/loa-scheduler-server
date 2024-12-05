@@ -1,0 +1,17 @@
+package com.example.loascheduler.raidGroup.dto.response;
+
+import com.example.loascheduler.character.dto.response.CharacterInfoResponse;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
+
+@Getter
+@Setter
+public class RaidGroupListResponse {
+    private Long raidGroupId;
+    private String name;
+    private String day;
+    private List<CharacterInfoResponse> characters;
+
+}
