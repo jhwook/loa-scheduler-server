@@ -29,6 +29,7 @@ public class RaidGroupService {
         return new RaidGroupResponse(raidGroup.getId(), raidGroup.getDay());
     }
 
+    @Transactional
     public void setRaidName(Long id, String raidName) {
         RaidGroup raidGroup = raidGroupRepository.findById(id).orElseThrow();
         raidGroup.updateRaidName(raidName);
