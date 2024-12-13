@@ -12,6 +12,7 @@ public class RaidGroupListResponse {
     private Long raidGroupId;
     private String name;
     private String day;
+    private String time;
     private List<CharacterInfoResponse> characters;
 
 }

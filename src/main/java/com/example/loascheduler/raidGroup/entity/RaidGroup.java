@@ -19,6 +19,8 @@ public class RaidGroup extends Timestamped {
 
     private String day;
 
+    private String raidTime;
+
     private String raidName;
 
     @OneToMany(mappedBy = "raidGroup", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -30,5 +32,9 @@ public class RaidGroup extends Timestamped {
 
     public void updateRaidName(String raidName) {
         this.raidName = raidName;
+    }
+
+    public void updateRaidTime(String raidTime) {
+        this.raidTime = raidTime;
     }
 }

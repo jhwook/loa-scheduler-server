@@ -1,9 +1,11 @@
 package com.example.loascheduler.raidGroup.controller;
 
+import com.example.loascheduler.common.exception.DuplicateCharacterException;
 import com.example.loascheduler.raidGroup.dto.response.RaidGroupListResponse;
 import com.example.loascheduler.raidGroup.dto.response.RaidGroupResponse;
 import com.example.loascheduler.raidGroup.service.RaidGroupService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,11 +34,21 @@ public class RaidGroupController {
         raidGroupService.setRaidName(id, raidName);
     }
 
+    // 레이드 시간 설정
+    @PostMapping("/raid/time/{id}")
+    public void setRaidTime(@RequestParam String raidTime, @PathVariable Long id) {
+        raidGroupService.setRaidTime(id, raidTime);
+    }
+
     // 레이드에 캐릭터 추가
     @PostMapping("/raid/character")
-    public void addCharacterToRaidGroup(@RequestParam Long raidGroupId, @RequestParam String characterName) {
-        System.out.println(characterName);
-        raidGroupService.addCharacterToRaidGroup(raidGroupId, characterName);
+    public ResponseEntity<String> addCharacterToRaidGroup(@RequestParam Long raidGroupId, @RequestParam String characterName) {
+        try {
+            raidGroupService.addCharacterToRaidGroup(raidGroupId, characterName);
+            return ResponseEntity.ok("캐릭터가 성공적으로 추가되었습니다.");
+        } catch (DuplicateCharacterException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     // 레이드 캐릭터 삭제

@@ -41,8 +41,8 @@ public class CharacterService {
 
         return new CharacterInfoResponse(
                 character.getClassName(),
-                character.getNickName(),
-                character.getLevel()
+                character.getLevel(),
+                character.getNickName()
         );
     }
 

@@ -3,6 +3,7 @@ package com.example.loascheduler.raidGroup.service;
 import com.example.loascheduler.character.dto.response.CharacterInfoResponse;
 import com.example.loascheduler.character.entity.Characters;
 import com.example.loascheduler.character.repository.CharacterRepository;
+import com.example.loascheduler.common.exception.DuplicateCharacterException;
 import com.example.loascheduler.raidGroup.dto.response.RaidGroupListResponse;
 import com.example.loascheduler.raidGroup.dto.response.RaidGroupResponse;
 import com.example.loascheduler.raidGroup.entity.RaidCharacters;
@@ -35,6 +36,12 @@ public class RaidGroupService {
         raidGroup.updateRaidName(raidName);
     }
 
+    @Transactional
+    public void setRaidTime(Long id, String raidTime) {
+        RaidGroup raidGroup = raidGroupRepository.findById(id).orElseThrow();
+        raidGroup.updateRaidTime(raidTime);
+    }
+
     @Transactional(readOnly = true)
     public List<RaidGroupListResponse> getRaidGroup(String day) {
         List<RaidGroup> raidGroups = raidGroupRepository.findAllByDayWithCharacters(day);
@@ -44,6 +51,7 @@ public class RaidGroupService {
             response.setRaidGroupId(raidGroup.getId());
             response.setName(raidGroup.getRaidName());
             response.setDay(raidGroup.getDay());
+            response.setTime(raidGroup.getRaidTime());
 
             List<CharacterInfoResponse> characters = raidGroup.getCharacters().stream()
                     .map(raidCharacter -> {
@@ -64,6 +72,13 @@ public class RaidGroupService {
         RaidGroup raidGroup = raidGroupRepository.findById(raidGroupId).orElseThrow();
         Characters character = characterRepository.findByNickName(characterName);
 
+        boolean isDuplicate = raidGroup.getCharacters().stream()
+                .anyMatch(rc -> rc.getCharacter().getId().equals(character.getId()));
+
+        if (isDuplicate) {
+            throw new DuplicateCharacterException("이 캐릭터는 이미 해당 레이드 그룹에 추가되었습니다.");
+        }
+
         RaidCharacters raidCharacters = new RaidCharacters(raidGroup, character);
         raidCharactersRepository.save(raidCharacters);
     }
@@ -78,4 +93,6 @@ public class RaidGroupService {
         RaidGroup raidGroup = raidGroupRepository.findById(raidGroupId).orElseThrow();
         raidGroupRepository.delete(raidGroup);
     }
+
+
 }
