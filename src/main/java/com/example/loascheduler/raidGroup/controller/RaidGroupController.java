@@ -22,10 +22,10 @@ public class RaidGroupController {
        return ResponseEntity.ok(raidGroupService.addRaidGroup(day));
     }
 
-    // 레이드 목록 조회(요일별)
+    // 레이드 목록 조회(요일별, 레이드별)
     @GetMapping("/raid/group")
-    public ResponseEntity<List<RaidGroupListResponse>> getRaidGroup(@RequestParam String day) {
-        return ResponseEntity.ok(raidGroupService.getRaidGroup(day));
+    public ResponseEntity<List<RaidGroupListResponse>> getRaidGroup(@RequestParam String day, @RequestParam String raid) {
+        return ResponseEntity.ok(raidGroupService.getRaidGroup(day, raid));
     }
 
     // 레이드 이름 설정

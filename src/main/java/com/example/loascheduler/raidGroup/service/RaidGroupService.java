@@ -43,8 +43,19 @@ public class RaidGroupService {
     }
 
     @Transactional(readOnly = true)
-    public List<RaidGroupListResponse> getRaidGroup(String day) {
-        List<RaidGroup> raidGroups = raidGroupRepository.findAllByDayWithCharacters(day);
+    public List<RaidGroupListResponse> getRaidGroup(String day, String raid) {
+
+        List<RaidGroup> raidGroups;
+
+        if("All".equals(day) && "All".equals(raid)) {
+            raidGroups = raidGroupRepository.findAllWithCharacters();
+        } else if("All".equals(day)) {
+            raidGroups = raidGroupRepository.findAllRaidNameWithCharacters(raid);
+        } else if ("All".equals(raid)) {
+            raidGroups = raidGroupRepository.findAllByDayWithCharacters(day);
+        } else {
+            raidGroups = raidGroupRepository.findAllByDayAndRaidNameWithCharacters(day, raid);
+        }
 
         return raidGroups.stream().map(raidGroup -> {
             RaidGroupListResponse response = new RaidGroupListResponse();
