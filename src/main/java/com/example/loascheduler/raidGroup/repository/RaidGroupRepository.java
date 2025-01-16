@@ -9,15 +9,15 @@ import java.util.List;
 
 public interface RaidGroupRepository extends JpaRepository<RaidGroup, Long> {
 
-    @Query("SELECT rg FROM RaidGroup rg LEFT JOIN FETCH rg.characters rc LEFT JOIN FETCH rc.character")
+    @Query("SELECT rg FROM RaidGroup rg LEFT JOIN FETCH rg.characters rc LEFT JOIN FETCH rc.character ORDER BY rg.raidTime")
     List<RaidGroup> findAllWithCharacters();
 
-    @Query("SELECT rg FROM RaidGroup rg LEFT JOIN FETCH rg.characters rc LEFT JOIN FETCH rc.character WHERE rg.raidName = :raidName")
+    @Query("SELECT rg FROM RaidGroup rg LEFT JOIN FETCH rg.characters rc LEFT JOIN FETCH rc.character WHERE rg.raidName = :raidName ORDER BY rg.raidTime")
     List<RaidGroup> findAllRaidNameWithCharacters(@Param("raidName") String raidName);
 
-    @Query("SELECT rg FROM RaidGroup rg LEFT JOIN FETCH rg.characters rc LEFT JOIN FETCH rc.character WHERE rg.day = :day")
+    @Query("SELECT rg FROM RaidGroup rg LEFT JOIN FETCH rg.characters rc LEFT JOIN FETCH rc.character WHERE rg.day = :day ORDER BY rg.raidTime")
     List<RaidGroup> findAllByDayWithCharacters(@Param("day") String day);
 
-    @Query("SELECT rg FROM RaidGroup rg LEFT JOIN FETCH rg.characters rc LEFT JOIN FETCH rc.character WHERE rg.day = :day AND rg.raidName = :raidName")
+    @Query("SELECT rg FROM RaidGroup rg LEFT JOIN FETCH rg.characters rc LEFT JOIN FETCH rc.character WHERE rg.day = :day AND rg.raidName = :raidName ORDER BY rg.raidTime")
     List<RaidGroup> findAllByDayAndRaidNameWithCharacters(@Param("day") String day, @Param("raidName") String raidName);
 }
