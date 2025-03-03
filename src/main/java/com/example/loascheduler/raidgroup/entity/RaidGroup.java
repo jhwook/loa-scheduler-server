@@ -1,4 +1,4 @@
-package com.example.loascheduler.raidGroup.entity;
+package com.example.loascheduler.raidgroup.entity;
 
 import com.example.loascheduler.common.entity.Timestamped;
 import jakarta.persistence.*;
@@ -36,5 +36,9 @@ public class RaidGroup extends Timestamped {
 
     public void updateRaidTime(String raidTime) {
         this.raidTime = raidTime;
+    }
+
+    public void updateRaidDay(String raidDay) {
+        this.day = raidDay;
     }
 }

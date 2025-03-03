@@ -1,4 +1,4 @@
-package com.example.loascheduler.raidGroup.dto.response;
+package com.example.loascheduler.raidgroup.dto.response;
 
 import com.example.loascheduler.character.dto.response.CharacterInfoResponse;
 import lombok.Getter;

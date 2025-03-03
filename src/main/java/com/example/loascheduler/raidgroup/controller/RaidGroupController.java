@@ -1,9 +1,9 @@
-package com.example.loascheduler.raidGroup.controller;
+package com.example.loascheduler.raidgroup.controller;
 
 import com.example.loascheduler.common.exception.DuplicateCharacterException;
-import com.example.loascheduler.raidGroup.dto.response.RaidGroupListResponse;
-import com.example.loascheduler.raidGroup.dto.response.RaidGroupResponse;
-import com.example.loascheduler.raidGroup.service.RaidGroupService;
+import com.example.loascheduler.raidgroup.dto.response.RaidGroupListResponse;
+import com.example.loascheduler.raidgroup.dto.response.RaidGroupResponse;
+import com.example.loascheduler.raidgroup.service.RaidGroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +38,11 @@ public class RaidGroupController {
     @PostMapping("/raid/time/{id}")
     public void setRaidTime(@RequestParam String raidTime, @PathVariable Long id) {
         raidGroupService.setRaidTime(id, raidTime);
+    }
+
+    @PostMapping("/raid/day/{id}")
+    public void setRaidDay(@RequestParam String raidDay, @PathVariable Long id) {
+        raidGroupService.setRaidDay(id, raidDay);
     }
 
     // 레이드에 캐릭터 추가

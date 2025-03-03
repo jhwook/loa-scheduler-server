@@ -1,35 +1,30 @@
 package com.example.loascheduler.user.controller;
 
+import com.example.loascheduler.user.dto.request.SigninRequest;
+import com.example.loascheduler.user.dto.request.SignupRequest;
+import com.example.loascheduler.user.dto.response.SigninResponse;
+import com.example.loascheduler.user.dto.response.SignupResponse;
+import com.example.loascheduler.user.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
 
-//    private final AuthService authService;
-//
-//    @PostMapping("/auth/signup")
-//    public ResponseEntity<String> signup(@RequestBody SignupRequest signupRequest, BindingResult result) {
-//
-//        if (result.hasErrors()) {
-//            // 검증 실패 시 첫 번째 오류 메시지 반환
-//            return ResponseEntity.badRequest().body(result.getAllErrors().get(0).getDefaultMessage());
-//        }
-//        String bearerToken = authService.signup(signupRequest);
-//        return ResponseEntity
-//                .ok()
-//                .body(bearerToken);
-//    }
-//
-//    @PostMapping("/auth/signin")
-//    public ResponseEntity<Void> signin(@RequestBody SigninRequest signinRequest) {
-//        String bearerToken = authService.signin(signinRequest);
-//        return ResponseEntity.ok().header("Authorization", bearerToken).build();
-//    }
+    private final AuthService authService;
 
-//    @DeleteMapping("/auth/signout")
-//    public ResponseEntity<String> signout(@AuthenticationPrincipal AuthUser authUser, @RequestBody SignoutRequest signoutRequest) {
-//        return ResponseEntity.ok(authService.signout(authUser.getUserId(), signoutRequest));
-//    }
+    @PostMapping("/auth/signup")
+    public ResponseEntity<SignupResponse> signup(@Valid @RequestBody SignupRequest signupRequest) {
+        return ResponseEntity.ok(authService.signup(signupRequest));
+    }
+
+    @PostMapping("/auth/signin")
+    public ResponseEntity<SigninResponse> signin(@Valid @RequestBody SigninRequest signinRequest) {
+        return ResponseEntity.ok(authService.signin(signinRequest));
+    }
 }

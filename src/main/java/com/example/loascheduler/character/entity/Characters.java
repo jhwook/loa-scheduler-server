@@ -1,7 +1,7 @@
 package com.example.loascheduler.character.entity;
 
 import com.example.loascheduler.common.entity.Timestamped;
-import com.example.loascheduler.raidGroup.entity.RaidCharacters;
+import com.example.loascheduler.raidgroup.entity.RaidCharacters;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

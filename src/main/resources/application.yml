@@ -1,28 +1,28 @@
-#spring:
-#  application:
-#    name: loa-scheduler
-#
-#  profiles:
-#    active: prod
-#
-
 spring:
   application:
     name: loa-scheduler
 
-  datasource:
-    url: jdbc:postgresql://loa-scheduler.cd8k2c6ae6yk.ap-northeast-2.rds.amazonaws.com:5432/loa
-    username: postgres
-    password: postgres
+  profiles:
+    active: dev
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-    show-sql: true
 
-server:
-  port: 8080
+#spring:
+#  application:
+#    name: loa-scheduler
+#
+#  datasource:
+#    url: jdbc:postgresql://loa-scheduler.cd8k2c6ae6yk.ap-northeast-2.rds.amazonaws.com:5432/loa
+#    username: postgres
+#    password: postgres
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
+#        format_sql: true
+#    show-sql: true
+#
+#server:
+#  port: 8080

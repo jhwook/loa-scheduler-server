@@ -1,6 +1,6 @@
-package com.example.loascheduler.raidGroup.repository;
+package com.example.loascheduler.raidgroup.repository;
 
-import com.example.loascheduler.raidGroup.entity.RaidGroup;
+import com.example.loascheduler.raidgroup.entity.RaidGroup;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

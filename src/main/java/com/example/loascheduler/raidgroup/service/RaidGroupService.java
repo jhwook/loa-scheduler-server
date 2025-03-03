@@ -1,15 +1,15 @@
-package com.example.loascheduler.raidGroup.service;
+package com.example.loascheduler.raidgroup.service;
 
 import com.example.loascheduler.character.dto.response.CharacterInfoResponse;
 import com.example.loascheduler.character.entity.Characters;
 import com.example.loascheduler.character.repository.CharacterRepository;
 import com.example.loascheduler.common.exception.DuplicateCharacterException;
-import com.example.loascheduler.raidGroup.dto.response.RaidGroupListResponse;
-import com.example.loascheduler.raidGroup.dto.response.RaidGroupResponse;
-import com.example.loascheduler.raidGroup.entity.RaidCharacters;
-import com.example.loascheduler.raidGroup.entity.RaidGroup;
-import com.example.loascheduler.raidGroup.repository.RaidCharactersRepository;
-import com.example.loascheduler.raidGroup.repository.RaidGroupRepository;
+import com.example.loascheduler.raidgroup.dto.response.RaidGroupListResponse;
+import com.example.loascheduler.raidgroup.dto.response.RaidGroupResponse;
+import com.example.loascheduler.raidgroup.entity.RaidCharacters;
+import com.example.loascheduler.raidgroup.entity.RaidGroup;
+import com.example.loascheduler.raidgroup.repository.RaidCharactersRepository;
+import com.example.loascheduler.raidgroup.repository.RaidGroupRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,4 +106,9 @@ public class RaidGroupService {
     }
 
 
+    @Transactional
+    public void setRaidDay(Long id, String raidDay) {
+        RaidGroup raidGroup = raidGroupRepository.findById(id).orElseThrow();
+        raidGroup.updateRaidDay(raidDay);
+    }
 }

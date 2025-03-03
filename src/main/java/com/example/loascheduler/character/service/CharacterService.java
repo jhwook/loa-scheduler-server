@@ -6,7 +6,6 @@ import com.example.loascheduler.character.repository.CharacterRepository;
 import com.example.loascheduler.classType.repository.ClassTypeRepository;
 import com.example.loascheduler.client.CharacterInfoService;
 import com.example.loascheduler.common.exception.CharacterAlreadyExistsException;
-import com.example.loascheduler.user.dto.response.CharacterInfoResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,11 +28,11 @@ public class CharacterService {
         if (existingCharacter.isPresent()) {
             throw new CharacterAlreadyExistsException("Character already exists.");
         }
-        CharacterInfoResponseDto response = characterInfoService.getMyCharacter(characterName);
+        CharacterInfoResponse response = characterInfoService.getMyCharacter(characterName);
         Characters characters = new Characters(
-                response.getCharacterClassName(),
-                response.getCharacterName(),
-                response.getItemLevel()
+                response.getClassName(),
+                response.getNickName(),
+                response.getLevel()
         );
         characterRepository.save(characters);
 
@@ -44,6 +43,10 @@ public class CharacterService {
                 character.getLevel(),
                 character.getNickName()
         );
+    }
+
+    public void searchMyCharacters(String characterName) {
+        characterInfoService.getAllCharacter(characterName);
     }
 
     public CharacterInfoResponse getCharacter(String characterName) {

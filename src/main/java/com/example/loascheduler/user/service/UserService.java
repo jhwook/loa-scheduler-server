@@ -1,53 +1,73 @@
 package com.example.loascheduler.user.service;
 
-import com.example.loascheduler.user.dto.response.CharacterInfoResponseDto;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
+import com.example.loascheduler.common.dto.AuthUser;
+import com.example.loascheduler.common.exception.InvalidRequestException;
+import com.example.loascheduler.user.dto.request.UserChangePasswordRequest;
+import com.example.loascheduler.user.dto.request.UserWithdrawRequest;
+import com.example.loascheduler.user.dto.response.UserResponse;
+import com.example.loascheduler.user.entity.User;
+import com.example.loascheduler.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.net.URI;
-
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-import org.json.JSONObject;
-
-@Slf4j
 @Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserService {
 
-    private String bearerToken = "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IktYMk40TkRDSTJ5NTA5NWpjTWk5TllqY2lyZyIsImtpZCI6IktYMk40TkRDSTJ5NTA5NWpjTWk5TllqY2lyZyJ9.eyJpc3MiOiJodHRwczovL2x1ZHkuZ2FtZS5vbnN0b3ZlLmNvbSIsImF1ZCI6Imh0dHBzOi8vbHVkeS5nYW1lLm9uc3RvdmUuY29tL3Jlc291cmNlcyIsImNsaWVudF9pZCI6IjEwMDAwMDAwMDA0NzMzODEifQ.mcaqyCtheQ0ys2U6IF5P6l5C7wuPDgANm33JsMEsDXJkK-Sg2QEFiGARyK-fhd2w9ji0jvz-6n9jMAQXaa2F6k70jexhpt19ISIAkrcs95Mb1bzQ-elFxZ4omYtS9aGw5RJ8695N_SYk9yLIGgnkrordB7E2qeyCUdYajcv9R1IiDDZH728jPpjm_ls65P4o4ZSmiobYDeMHYNOK-XWjeNuZrcBI9JyfoSUyWGA59nLUiNwHyQCakruuz6ORbOKgwSXZp4AbRebYLHulnvqWIrCpgJe6dJVk-Gd_RsYRF6niqLVkLi9DZ6QSmmKOxzaumWaMrl4GlkJ69_-4RaO3oQ";
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    private final RestTemplate restTemplate;
-
-    public UserService(RestTemplateBuilder builder) {
-        this.restTemplate = builder.build();
+    public UserResponse getUser(long userId) {
+        User user = findValidUser(userId);
+        return UserResponse.entityToDto(user);
     }
 
-//    public CharacterInfoResponseDto getMyCharacter(String characterName) {
-//        URI uri = UriComponentsBuilder
-//                .fromUriString("https://developer-lostark.game.onstove.com/armories/characters/")
-//                .path(characterName)
-//                .path("/profiles")
-//                .encode()
-//                .build()
-//                .toUri();
-//        log.info("uri = " + uri);
-//
-//        RequestEntity<Void> request = RequestEntity
-//                .get(uri)
-//                .header("Authorization", bearerToken)
-//                .build();
-//
-//        ResponseEntity<String> response = restTemplate.exchange(request, String.class);
-//
-//        JSONObject json = new JSONObject(response.getBody());
-//
-//        String name = String.valueOf(json.get("CharacterName"));
-//        String itemAvgLevel = String.valueOf(json.get("ItemAvgLevel"));
-//        String characterClassName = String.valueOf(json.get("CharacterClassName"));
-//
-//        return new CharacterInfoResponseDto(name, itemAvgLevel, characterClassName);
-//    }
+    @Transactional
+    public void withdrawUser(AuthUser authUser, UserWithdrawRequest request) {
+        User user = findValidUser(authUser.getId());
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new InvalidRequestException("비밀번호가 틀렸습니다.");
+        }
+
+        user.withdrawUser(); // 유저 탈퇴 처리
+    }
+
+    @Transactional
+    public void changePassword(AuthUser authUser, UserChangePasswordRequest request) {
+        User user = findValidUser(authUser.getId());
+
+        if (passwordEncoder.matches(request.getNewPassword(), user.getPassword())) {
+            throw new InvalidRequestException("새 비밀번호는 기존 비밀번호와 같을 수 없습니다.");
+        }
+
+        if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+            throw new InvalidRequestException("잘못된 비밀번호입니다.");
+        }
+
+        validateNewPassword(request.getNewPassword());
+        user.changePassword(passwordEncoder.encode(request.getNewPassword()));
+    }
+
+    private User findValidUser(long userId) {
+        return userRepository.findById(userId)
+                .filter(User::isUserStatus)
+                .orElseThrow(() -> new InvalidRequestException("유효하지 않은 사용자입니다."));
+    }
+
+    public static void validateNewPassword(String password) {
+        if (password == null || password.length() < 8 ||
+                !password.matches(".*\\d.*") ||
+                !password.matches(".*[A-Z].*")) {
+            throw new InvalidRequestException("새 비밀번호는 8자 이상이어야 하며, 숫자와 대문자를 포함해야 합니다.");
+        }
+    }
+
+    public UserResponse getMyInfo(AuthUser authUser) {
+        return getUser(authUser.getId());
+    }
+
 }

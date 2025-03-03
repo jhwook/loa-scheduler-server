@@ -1,6 +1,6 @@
 package com.example.loascheduler.client;
 
-import com.example.loascheduler.user.dto.response.CharacterInfoResponseDto;
+import com.example.loascheduler.character.dto.response.CharacterInfoResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -23,7 +23,7 @@ public class CharacterInfoService {
         this.restTemplate = builder.build();
     }
 
-    public CharacterInfoResponseDto getMyCharacter(String characterName) {
+    public CharacterInfoResponse getMyCharacter(String characterName) {
         URI uri = UriComponentsBuilder
                 .fromUriString("https://developer-lostark.game.onstove.com/armories/characters/")
                 .path(characterName)
@@ -48,6 +48,28 @@ public class CharacterInfoService {
 
         log.info(name + " / " + itemAvgLevel + " / " + characterClassName);
 
-        return new CharacterInfoResponseDto(name, itemAvgLevel, characterClassName);
+        return new CharacterInfoResponse(characterClassName, itemAvgLevel, name);
+    }
+
+    public void getAllCharacter(String characterName) {
+        URI uri = UriComponentsBuilder
+                .fromUriString("https://developer-lostark.game.onstove.com/characters/")
+                .path(characterName)
+                .path("/siblings")
+                .encode()
+                .build()
+                .toUri();
+        log.info("uri = " + uri);
+
+        RequestEntity<Void> request = RequestEntity
+                .get(uri)
+                .header("Authorization", bearerToken)
+                .build();
+
+        ResponseEntity<String> response = restTemplate.exchange(request, String.class);
+
+//        JSONObject json = new JSONObject(response.getBody());
+
+        log.info("response = " + response.getBody());
     }
 }

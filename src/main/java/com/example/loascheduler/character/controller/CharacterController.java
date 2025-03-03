@@ -1,9 +1,7 @@
 package com.example.loascheduler.character.controller;
 
 import com.example.loascheduler.character.dto.response.CharacterInfoResponse;
-import com.example.loascheduler.character.entity.Characters;
 import com.example.loascheduler.character.service.CharacterService;
-import com.example.loascheduler.user.dto.response.CharacterInfoResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,5 +32,10 @@ public class CharacterController {
     @DeleteMapping("/characters/{nickName}")
     public void deleteCharacters(@PathVariable String nickName) {
         characterService.deleteCharacters(nickName);
+    }
+
+    @GetMapping("/characters/all")
+    public void searchMyCharacters(@RequestParam String characterName) {
+        this.characterService.searchMyCharacters(characterName);
     }
 }
