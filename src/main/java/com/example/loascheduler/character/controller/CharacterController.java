@@ -1,6 +1,7 @@
 package com.example.loascheduler.character.controller;
 
 import com.example.loascheduler.character.dto.response.CharacterInfoResponse;
+import com.example.loascheduler.character.dto.response.CharacterListResponse;
 import com.example.loascheduler.character.service.CharacterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +35,9 @@ public class CharacterController {
         characterService.deleteCharacters(nickName);
     }
 
+    // 서버, 닉네임 입력받아 원정대 캐릭터 리스트 응답
     @GetMapping("/characters/all")
-    public void searchMyCharacters(@RequestParam String characterName) {
-        this.characterService.searchMyCharacters(characterName);
+    public ResponseEntity<List<CharacterListResponse>> searchMyCharacters(@RequestParam String characterName, @RequestParam String serverName) {
+        return ResponseEntity.ok(characterService.searchMyCharacters(characterName, serverName));
     }
 }

@@ -2,6 +2,7 @@ package com.example.loascheduler.client;
 
 import com.example.loascheduler.character.dto.response.CharacterInfoResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.RequestEntity;
@@ -51,7 +52,7 @@ public class CharacterInfoService {
         return new CharacterInfoResponse(characterClassName, itemAvgLevel, name);
     }
 
-    public void getAllCharacter(String characterName) {
+    public JSONArray getAllCharacter(String characterName) {
         URI uri = UriComponentsBuilder
                 .fromUriString("https://developer-lostark.game.onstove.com/characters/")
                 .path(characterName)
@@ -70,6 +71,8 @@ public class CharacterInfoService {
 
 //        JSONObject json = new JSONObject(response.getBody());
 
-        log.info("response = " + response.getBody());
+        JSONArray jsonArray = new JSONArray(response.getBody());
+
+       return jsonArray;
     }
 }
