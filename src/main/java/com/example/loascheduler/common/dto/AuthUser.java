@@ -9,9 +9,9 @@ import lombok.RequiredArgsConstructor;
 public class AuthUser {
 
     private final Long id;
-    private final String email;
+    private final String username;
 
-    public static AuthUser from(Long id, String email) {
-        return new AuthUser(id, email);
+    public static AuthUser from(Long id, String username) {
+        return new AuthUser(id, username);
     }
 }

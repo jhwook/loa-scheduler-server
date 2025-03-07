@@ -20,6 +20,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    public User getUserById(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+        return user;
+    }
+
     public UserResponse getUser(long userId) {
         User user = findValidUser(userId);
         return UserResponse.entityToDto(user);

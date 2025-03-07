@@ -1,39 +1,51 @@
 package com.example.loascheduler.user.entity;
 
+import com.example.loascheduler.character.entity.Characters;
 import com.example.loascheduler.common.entity.Timestamped;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
 @Table(name = "users")
+@SequenceGenerator(name = "user_seq", sequenceName = "user_sequence", allocationSize = 1)
 public class User extends Timestamped {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
     private Long id;
 
-    @Column(name = "email", nullable = false)
-    private String email;
-
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "username", nullable = false)
+    private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
 
-    // 대표 캐릭터
+    @Column(name = "email")
+    private String email;
 
-    // 보유 캐릭터 목록
+    @Column(name = "name")
+    private String name;
 
-    @Column(nullable = false, name = "user_status")
+    @Column(name = "user_status")
     private boolean userStatus = true; // 유저 상태 (true: 활성, false: 탈퇴)
 
+    // 대표 캐릭터
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "main_character_id")
+    private Characters mainCharacter;
+
+    // 보유 캐릭터 list
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Characters> charactersList = new ArrayList<>();
+
     public User(String username, String password) {
-        this.name = username;
+        this.username = username;
         this.password = password;
     }
 

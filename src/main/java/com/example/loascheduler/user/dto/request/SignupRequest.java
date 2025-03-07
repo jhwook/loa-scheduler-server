@@ -13,16 +13,12 @@ import lombok.NoArgsConstructor;
 public class SignupRequest {
 
     @NotBlank
-    @Email
-    private String email;
+    private String username;
 
     @Pattern(
-            regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[#?!@$%^&*-]).{8,15}$",
-            message = "비밀번호는 8자 이상 15자 이하로, 대문자, 소문자, 숫자, 특수문자를 각각 최소 1개씩 포함해야 합니다"
+            regexp = "^.{4,15}$",
+            message = "비밀번호는 4자 이상 15자 이하"
     )
     @NotBlank
     private String password;
-
-    @NotBlank
-    private String name;
 }

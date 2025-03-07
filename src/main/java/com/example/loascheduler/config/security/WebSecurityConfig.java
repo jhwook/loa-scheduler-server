@@ -44,7 +44,7 @@ public class WebSecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/**").permitAll()
+//                        .requestMatchers("/**").permitAll()
                         .requestMatchers("/characters/all").permitAll()
                         .requestMatchers("/api/v1/cryptos/list").permitAll()
                         .requestMatchers("/api/v1/cryptos/latest/price").permitAll()
@@ -70,7 +70,8 @@ public class WebSecurityConfig {
                 "http://localhost:3000",
                 "http://localhost:8282",
                 "https://loa-scheduler.com",
-                "https://www.loa-scheduler.com"
+                "https://www.loa-scheduler.com",
+                "http://127.0.0.1:5173"
         ));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
