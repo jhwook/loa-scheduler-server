@@ -1,4 +1,4 @@
-package com.example.loascheduler.groupspace.service;
+package com.example.loascheduler.groupSpace.service;
 
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,7 @@
-package com.example.loascheduler.raidgroup.entity;
+package com.example.loascheduler.raidGroup.entity;
 
 import com.example.loascheduler.common.entity.Timestamped;
+import com.example.loascheduler.groupSpace.entity.GroupSpace;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,11 @@ public class RaidGroup extends Timestamped {
     private String raidTime;
 
     private String raidName;
+
+    // 속한 group id
+    @ManyToOne
+    @JoinColumn(name = "group_space_id")
+    private GroupSpace groupSpace;
 
     @OneToMany(mappedBy = "raidGroup", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RaidCharacters> characters = new ArrayList<>();

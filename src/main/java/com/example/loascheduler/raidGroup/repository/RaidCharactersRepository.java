@@ -1,6 +1,6 @@
-package com.example.loascheduler.raidgroup.repository;
+package com.example.loascheduler.raidGroup.repository;
 
-import com.example.loascheduler.raidgroup.entity.RaidCharacters;
+import com.example.loascheduler.raidGroup.entity.RaidCharacters;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RaidCharactersRepository extends JpaRepository<RaidCharacters, Long> {

@@ -1,4 +1,4 @@
-package com.example.loascheduler.raidgroup.entity;
+package com.example.loascheduler.raidGroup.entity;
 
 import com.example.loascheduler.character.entity.Characters;
 import com.example.loascheduler.common.entity.Timestamped;

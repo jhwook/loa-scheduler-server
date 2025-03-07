@@ -1,9 +1,9 @@
-package com.example.loascheduler.raidgroup.controller;
+package com.example.loascheduler.raidGroup.controller;
 
 import com.example.loascheduler.common.exception.DuplicateCharacterException;
-import com.example.loascheduler.raidgroup.dto.response.RaidGroupListResponse;
-import com.example.loascheduler.raidgroup.dto.response.RaidGroupResponse;
-import com.example.loascheduler.raidgroup.service.RaidGroupService;
+import com.example.loascheduler.raidGroup.dto.response.RaidGroupListResponse;
+import com.example.loascheduler.raidGroup.dto.response.RaidGroupResponse;
+import com.example.loascheduler.raidGroup.service.RaidGroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

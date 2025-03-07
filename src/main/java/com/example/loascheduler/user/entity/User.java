@@ -25,6 +25,10 @@ public class User extends Timestamped {
     @Column(name = "password", nullable = false)
     private String password;
 
+    // 대표 캐릭터
+
+    // 보유 캐릭터 목록
+
     @Column(nullable = false, name = "user_status")
     private boolean userStatus = true; // 유저 상태 (true: 활성, false: 탈퇴)
 
