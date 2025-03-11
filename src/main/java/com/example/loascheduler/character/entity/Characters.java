@@ -47,8 +47,8 @@ public class Characters extends Timestamped {
     }
 
     public Characters(
-            String characterClassName,
             String characterName,
+            String characterClassName,
             String itemLevel,
             int expLevel,
             String serverName,
