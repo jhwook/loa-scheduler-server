@@ -71,8 +71,4 @@ public class UserService {
         }
     }
 
-    public UserResponse getMyInfo(AuthUser authUser) {
-        return getUser(authUser.getId());
-    }
-
 }
