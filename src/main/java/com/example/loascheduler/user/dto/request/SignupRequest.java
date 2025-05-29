@@ -15,10 +15,10 @@ public class SignupRequest {
     @NotBlank
     private String username;
 
-    @Pattern(
-            regexp = "^.{4,15}$",
-            message = "비밀번호는 4자 이상 15자 이하"
-    )
+//    @Pattern(
+//            regexp = "^.{4,15}$",
+//            message = "비밀번호는 4자 이상 15자 이하"
+//    )
     @NotBlank
     private String password;
 }

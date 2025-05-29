@@ -71,7 +71,8 @@ public class WebSecurityConfig {
                 "http://localhost:8282",
                 "https://loa-scheduler.com",
                 "https://www.loa-scheduler.com",
-                "http://127.0.0.1:5173"
+                "http://127.0.0.1:5173",
+                "http://localhost:5173"
         ));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
